@@ -5,8 +5,8 @@ json_data=$(curl -s https://devops.spinbet.com/)
 output_filename='pipeline_job_summary.csv'
 
 # Print header row
-if [[ -z $(grep -i "Status, Reason, Occurrences" $output_filename) ]]; then
-    echo "Status, Reason, Occurrences" > $output_filename
+if [[ -z $(grep -i "Status,Reason,Occurrences" $output_filename) ]]; then
+    echo "Status,Reason,Occurrences" > $output_filename
 fi
 
 # Loop through each JSON object
@@ -16,7 +16,7 @@ for item in $(echo $json_data | jq -r '.[] | [ .status, .reason, .occurrences ] 
     stat=$(echo $parsed_value | awk -F ',' '{print $1}')
     reason=$(echo $parsed_value | awk -F ',' '{print $2}')
     occurrences=$(echo $parsed_value | awk -F ',' '{print $3}')
-    
+
     #   Skip "think_it_passed" reason
     if [[ $reason != 'think_it_passed' ]]; then
 
@@ -28,12 +28,12 @@ for item in $(echo $json_data | jq -r '.[] | [ .status, .reason, .occurrences ] 
     #  Update occurrences for existing status and reason
             if [[ ! -z "$existing_reason" ]]; then
                 new_count=$(echo "$existing_reason" | cut -d ',' -f3 | awk '{print $1 + '$occurrences'}')
-                sed -i 's#^'"$stat"', '"$reason"', .*$#'"$stat"', '"$reason"', '"$new_count"'#g' $output_filename
+                sed -i 's#^'"$stat"','"$reason"',.*$#'"$stat"','"$reason"','"$new_count"'#g' $output_filename
             else
-                echo "$stat, $reason, $occurrences" | tee -a $output_filename
+                echo "$stat,$reason,$occurrences" | tee -a $output_filename
             fi
         else
-            echo "$stat, $reason, $occurrences" | tee -a $output_filename
+            echo "$stat,$reason,$occurrences" | tee -a $output_filename
         fi
     fi
 done
