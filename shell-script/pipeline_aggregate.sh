@@ -20,8 +20,8 @@ output_filename=${2:-'pipeline_job_summary'}.csv
 output_filename=$(echo "$output_filename" | sed 's/\.csv\.csv/.csv/g')
 
 # Print header row
-echo "---------------------------------"
-echo "Status,Reason,Occurrences"
+echo -e "---------------------------------\n"
+echo -e "Status,Reason,Occurrences\n"
 if [[ -z $(grep -i "Status,Reason,Occurrences" $output_filename) ]]; then
     echo "Status,Reason,Occurrences" > $output_filename
 fi
@@ -46,12 +46,12 @@ for item in $(echo $json_data | jq -r '.[] | [ .status, .reason, .occurrences ] 
             if [[ ! -z "$existing_reason" ]]; then
                 new_count=$(echo "$existing_reason" | cut -d ',' -f3 | awk '{print $1 + '$occurrences'}')
                 sed -i 's#^'"$stat"','"$reason"',.*$#'"$stat"','"$reason"','"$new_count"'#g' $output_filename
-                echo "$stat,$reason,$new_count"
+                echo -e "$stat,$reason,$new_count\n"
             else
-                echo "$stat,$reason,$occurrences" | tee -a $output_filename
+                echo -e "$stat,$reason,$occurrences\n" | tee -a $output_filename
             fi
         else
-            echo "$stat,$reason,$occurrences" | tee -a $output_filename
+            echo -e "$stat,$reason,$occurrences\n" | tee -a $output_filename
         fi
     fi
 done

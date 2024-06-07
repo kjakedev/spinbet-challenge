@@ -43,12 +43,10 @@ def create_pie_chart(csv_path, output_filename):
         return my_format
 
     # Create the main pie chart
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 14))
+    (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 14))
 
-
-
-    ax1.pie(status_counts, labels=[f'{index}' for index, value in status_counts.items()], autopct = autopct_format(status_counts), startangle=90)
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax1.pie(status_counts, labels=[f'{index}' for index in status_counts.items()], autopct = autopct_format(status_counts), startangle=90)
+    ax1.axis('equal')
     ax1.set_title(f'Status Occurrences {today}')
 
     # Filter 'failed' status and group by reason
@@ -56,8 +54,8 @@ def create_pie_chart(csv_path, output_filename):
     reason_counts = failed_df.groupby('Reason')['Occurrences'].sum()
 
     # Create the pie chart for 'failed' reasons
-    ax2.pie(reason_counts, labels=[f'{index}' for index, value in reason_counts.items()], autopct = autopct_format(reason_counts), startangle=90)
-    ax2.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax2.pie(reason_counts, labels=[f'{index}' for index in reason_counts.items()], autopct = autopct_format(reason_counts), startangle=90)
+    ax2.axis('equal')
     ax2.set_title(f'Failed Reasons Occurrences {today}')
 
     # Add total occurrences in the legend for both charts
