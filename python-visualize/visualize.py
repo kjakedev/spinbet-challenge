@@ -43,7 +43,7 @@ def create_pie_chart(csv_path, output_filename):
         return my_format
 
     # Create the main pie chart
-    (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 14))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 14))
 
     ax1.pie(status_counts, labels=[f'{index}' for index in status_counts.items()], autopct = autopct_format(status_counts), startangle=90)
     ax1.axis('equal')
