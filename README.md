@@ -27,6 +27,12 @@ Install required packages using the requirements.txt file:
 pip install -r python-visualize/requirements.txt
 ```
 
+3. Make sure that the scripts have executable permissions
+
+```
+sudo chmod +x shell-script/pipeline_aggregate.sh run.sh
+```
+
 ## Running the script
 
 To run the script simply run this command (Assuming you are in the root folder of this repository):
@@ -39,6 +45,8 @@ bash ./run.sh
 
 ```
 This script retrieves data, generates a CSV file, and creates the infographic.
+
+This single-line script also accepts arguments to check for accepted options and arguments run `. ./run.sh -h` or `. ./run.sh --help`
 
 Example outputs are in this repository: `pipeline_job_summary.csv` and `pipeline_job_summary.jpg`
 
@@ -88,7 +96,8 @@ python3 python-visualize/visualize.py -f test.csv -o test_summary
 ## Improvements
 
 - The display of the output of the script could be improved by adding visual identification such as color coding to highlight results in the command line.
-- Even with using of the python virtual environment there are still tendencies that the python program would not work. We can resolve this by making a container image and using this image just simply run the container without worrying the setting up of a python virtual environment
+- Even with using of the python virtual environment there are still tendencies that the python program would not work. We can resolve this by making a container image and using this image just simply run the container without worrying the setting up of a python virtual environment.
+- Other solution to ensure reliability of the script is to package it and so that it can be easily installed by the users.
 - The file outputs of the script could be overwritten many times and data could be inconsistent when an unexpected failure happened in the endpoint. There should be logs or version of the outputs somewhere in the server where this will run to keep track of previous runs and also a backup in case of failures. The logs or outputs should be logrotated to avoid filling up the disk of the server, assuming we are going to use this script frequently.
 
 ## Appendix
