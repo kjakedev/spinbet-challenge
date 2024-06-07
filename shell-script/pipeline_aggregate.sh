@@ -1,10 +1,27 @@
 #!/bin/bash
 
-# Define the JSON data (replace with your actual JSON source)
-json_data=$(curl -s https://devops.spinbet.com/)
-output_filename='pipeline_job_summary.csv'
+# Define the api endpoint and if none is provide it will be the default value
+api_endpoint=${1:-'https://devops.spinbet.com/'}
+
+
+# Use curl to test and get the JSON data
+curl_response=$(curl -s -o - -w "%{http_code}" "$api_endpoint")
+status_code="${curl_response: -3}"
+json_data="${curl_response:0:$((${#curl_response} - 3))}"
+
+# Check curl exit status
+if [[ $status_code -ne 200 ]]; then
+  echo "Error: curl failed to retrieve data from $api_endpoint (status code: $status_code). Exiting script."
+  exit 1
+fi
+
+# Define the output filename and if none is provide it will be the default value
+output_filename=${2:-'pipeline_job_summary'}.csv
+output_filename=$(echo "$output_filename" | sed 's/\.csv\.csv/.csv/g')
 
 # Print header row
+echo "---------------------------------"
+echo "Status,Reason,Occurrences"
 if [[ -z $(grep -i "Status,Reason,Occurrences" $output_filename) ]]; then
     echo "Status,Reason,Occurrences" > $output_filename
 fi
@@ -24,11 +41,12 @@ for item in $(echo $json_data | jq -r '.[] | [ .status, .reason, .occurrences ] 
         existing_status=$(grep -i "$stat" $output_filename)
 
         if [[ ! -z "$existing_status" ]]; then
-            existing_reason=$(grep -i "$stat, $reason" $output_filename)
+            existing_reason=$(grep -i "$stat,$reason" $output_filename)
     #  Update occurrences for existing status and reason
             if [[ ! -z "$existing_reason" ]]; then
                 new_count=$(echo "$existing_reason" | cut -d ',' -f3 | awk '{print $1 + '$occurrences'}')
                 sed -i 's#^'"$stat"','"$reason"',.*$#'"$stat"','"$reason"','"$new_count"'#g' $output_filename
+                echo "$stat,$reason,$new_count"
             else
                 echo "$stat,$reason,$occurrences" | tee -a $output_filename
             fi
@@ -37,5 +55,6 @@ for item in $(echo $json_data | jq -r '.[] | [ .status, .reason, .occurrences ] 
         fi
     fi
 done
+echo "---------------------------------"
 
 echo "CSV file generated in: $(pwd)/$output_filename"

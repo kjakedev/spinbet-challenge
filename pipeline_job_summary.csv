@@ -1,8 +1,10 @@
 Status,Reason,Occurrences
-success,n/a,2
-processing,n/a,4
-failed,timeout,7
-failed,system_error,5
-failed,resource_limit_exceeded,5
-failed,invalid_yaml,3
-failed,cannot_reach_downstream_entity,2
+success,n/a,52
+processing,n/a,46
+failed,invalid_input,48
+failed,invalid_yaml,31
+failed,resource_limit_exceeded,50
+failed,cannot_reach_downstream_entity,31
+failed,system_error,68
+failed,network_issue,55
+failed,timeout,30
