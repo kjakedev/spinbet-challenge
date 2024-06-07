@@ -29,8 +29,7 @@ pip install -r python-visualize/requirements.txt
 
 ## Running the script
 
-To run the script simply run this command:
-
+To run the script simply run this command (Assuming you are in the root folder of this repository):
 ```
 . ./run.sh
 
@@ -41,12 +40,12 @@ bash ./run.sh
 ```
 This script retrieves data, generates a CSV file, and creates the infographic.
 
-Example outputs are in this repository: `pipeline_job_summary.csv` and `pipeline_job_summary.jpg
+Example outputs are in this repository: `pipeline_job_summary.csv` and `pipeline_job_summary.jpg`
 
 
 ## shell-script
 
-Inside the `shell-script` folder is the `pipeline_aggregate.sh` bash script. This script invoke the API and processed the data to output a csv file. The script accepts two optional arguments with default values.
+Inside the `shell-script` folder is the `pipeline_aggregate.sh` bash script. This script invokes the API and processes the data to output a CSV file. The script accepts two optional arguments with default values.
 
 **Arguments:**
 - `$1` (**API URL**): Override the default API endpoint (Default value: `https://devops.spinbet.com/`).
@@ -54,9 +53,9 @@ Inside the `shell-script` folder is the `pipeline_aggregate.sh` bash script. Thi
 
 **NOTE:** The .csv file extension is automatically appended if no file extension or an invalid is provided.
 
-Example:
+Example (Assuming you are in the root folder of this repository):
 ```
-. ./pipeline_aggregate.sh http://34.117.217.236/ test  # Set custom API URL and filename
+. ./shell-script/pipeline_aggregate.sh http://34.117.217.236/ test  # Set custom API URL and filename
 ```
 
 ## python-visualize
@@ -80,7 +79,7 @@ The python program also accepts two optional arguments with default values.
 
 **NOTE:** The .jpg file extension is automatically appended if no file extension or an invalid is provided.
 
-Example:
+Example (Assuming you are in the root folder of this repository):
 ```
 python3 python-visualize/visualize.py -f test.csv -o test_summary
 ```
