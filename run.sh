@@ -45,7 +45,7 @@ pipeline_script="shell-script/pipeline_aggregate.sh"
 
 echo "--------------- $pipeline_script ------------------------"
 pipeline_output=$("$pipeline_script" "$api_endpoint" "$output_csv")
-echo $pipeline_output
+echo "$pipeline_output"
 if [ $? -ne 0 ]; then
     echo "Error: pipeline_aggregate.sh failed."
     help_function
